@@ -18,10 +18,10 @@ public class TicketManagerTest {
         repo.save(ticket3);
         repo.save(ticket4);
         repo.save(ticket5);
-        manager.searchBy("KUF", "OGZ");
+        manager.searchByAndSortPrice("KUF", "OGZ");
 
         Ticket[] expected = {ticket2};
-        Ticket[] actual = manager.searchBy("KUF", "OGZ");
+        Ticket[] actual = manager.searchByAndSortPrice("KUF", "OGZ");
 
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -35,16 +35,16 @@ public class TicketManagerTest {
         repo.save(ticket3);
         repo.save(ticket4);
         repo.save(ticket5);
-        manager.searchBy("LED", "OGZ");
+        manager.searchByAndSortPrice("LED", "OGZ");
 
         Ticket[] expected = {};
-        Ticket[] actual = manager.searchBy("LED", "OGZ");
+        Ticket[] actual = manager.searchByAndSortPrice("LED", "OGZ");
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldFindTicketSort() {
+    public void shouldFindTicketSortPrice() {
         TicketRepository repo = new TicketRepository();
         TicketManager manager = new TicketManager(repo);
         repo.save(ticket1);
@@ -52,10 +52,28 @@ public class TicketManagerTest {
         repo.save(ticket3);
         repo.save(ticket4);
         repo.save(ticket5);
-        manager.searchBy("LED", "GOJ");
+        manager.searchByAndSortPrice("LED", "GOJ");
 
         Ticket[] expected = {ticket3, ticket1, ticket5};
-        Ticket[] actual = manager.searchBy("LED", "GOJ");
+        Ticket[] actual = manager.searchByAndSortPrice("LED", "GOJ");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindTicketSortTime() {
+        TicketRepository repo = new TicketRepository();
+        TicketManager manager = new TicketManager(repo);
+        TicketByPriceAscComparator comparator = new TicketByPriceAscComparator();
+        repo.save(ticket1);
+        repo.save(ticket2);
+        repo.save(ticket3);
+        repo.save(ticket4);
+        repo.save(ticket5);
+        manager.searchByAndSortTime("LED", "GOJ", comparator);
+
+        Ticket[] expected = {ticket5, ticket1, ticket3};
+        Ticket[] actual = manager.searchByAndSortTime("LED", "GOJ", comparator);
 
         Assertions.assertArrayEquals(expected, actual);
     }
